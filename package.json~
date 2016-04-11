@@ -1,0 +1,15 @@
+{
+  "name": "balanco-municipios-sp",
+  "version": "0.0.0",
+  "description": "Visualize as receitas e despesas dos municípios de São Paulo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "transform": "node scripts/*.js"
+  },
+  "author": "William Siqueira",
+  "license": "BSD",
+  "devDependencies": {
+    "gulp": "~3.9.1"
+  }
+}
