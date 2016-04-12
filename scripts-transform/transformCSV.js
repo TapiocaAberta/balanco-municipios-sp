@@ -5,6 +5,7 @@ var csv = require("fast-csv"), normalizer = require('diacritics'), fs = require(
 /* * CONSTANTS */
 var PATH_MUNICIPIOS = 'app/data/municipios.json'
 var PATH_DESPESAS = 'app/data/despesas/'
+var PATH_RECEITAS = 'app/data/receitas/'
 var PATH_TODAS_RECEITAS = 'app/data/receitas.json'
 
 /* * Globals */
@@ -52,9 +53,14 @@ csv
  });
 
 /* * Will read the expenses data and write a JSON with the revenues of a given year to: *  * APP_ROOT/data/receitas.json * */
+var pRevenueId = '';
 csv
  .fromPath("./data/receitas_resultantes_de_impostos.csv", {delimiter: ';' })
  .on("data", function(data){    var cityName = data[0];    if(cityName != 'Município') {        var id = transformName(cityName);
+        if(pRevenueId == '') pRevenueId = id;
+        if(id != pRevenueId) {             writeJSON(PATH_RECEITAS + pRevenueId + '.json', revenues);
+             revenues = [];
+             pRevenueId = id;                 }
         revenues.push({            id: id,
             nome: cityName,
             ano: data[2],
@@ -65,6 +71,6 @@ csv
         })
     } })
   .on("end", function(){
-    writeJSON(PATH_TODAS_RECEITAS, revenues);
+    writeJSON(PATH_RECEITAS + pRevenueId + '.json', revenues);
  });
 
