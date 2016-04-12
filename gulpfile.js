@@ -22,7 +22,6 @@ gulp.task('clean', function() {
 });
 
 gulp.task('build-img', function() {
-
   return gulp.src('dist/images/**/*')
     .pipe(plugins.imagemin())
     .pipe(gulp.dest('dist/images'));
@@ -40,11 +39,11 @@ gulp.task('usemin', function() {
 gulp.task('server', function() {
     plugins.browserSync.init({
         server: {
-            baseDir: 'src'
+            baseDir: 'app'
         }
     });
 
-    gulp.watch('app/**/*').on('change', browserSync.reload);
+    gulp.watch('app/**/*').on('change',  plugins.browserSync.reload);
 
     gulp.watch('app/js/**/*.js').on('change', function(event) {
         console.log("Linting " + event.path);
