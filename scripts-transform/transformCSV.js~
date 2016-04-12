@@ -32,7 +32,7 @@ var retrieveExpenses = function(data) {    // TODO: need to be adjusted accordi
                 funcao: data[5],
                 subFuncao: data[6],
                 ano: years[i],
-                valor: toFloat(data[yearIndex])              };
+                valor: toFloat(data[yearIndex)              };
             expenses.push(expense);        }    }
 }
 /* * need to write a JSON with cities human readable name and a normalized lower case name to: *  * APP_ROOT/data/municipios.json *  * This data is taken from the expenses JSON *  */
