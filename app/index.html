@@ -65,8 +65,7 @@
 			<!-- ENDTITLE -->
 			<!-- SELECT -->
 			<div class="row">
-				<div class="col-lg-12">
-					<h2>
+				<div class="col-lg-8">
 						<div class="input-group">
 							<span class="input-group-addon" id="municipioLbl">Município
 							</span> <select class="form-control input-lg"
@@ -74,8 +73,17 @@
 								ng-disabled="!municipios" ng-change="loadApp()"
 								ng-options="m.nome for m in municipios"></select>
 						</div>
-					</h2>
 				</div>
+				<div class="col-lg-4">
+                        <div class="input-group">
+							<span class="input-group-addon" id="anoLbl">Ano
+							</span> <select class="form-control input-lg"
+								aria-describedby="anoLbl" ng-model="ano"
+								ng-disabled="!anos" ng-change="loadApp()"
+								ng-options="a for a in anos"></select>
+						</div>
+				</div>
+
 			</div>
 			<!-- ENDSELECT-->
 		</div>

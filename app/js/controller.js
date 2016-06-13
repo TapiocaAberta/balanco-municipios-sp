@@ -6,6 +6,7 @@ balancoApp.controller('BalancoController',
     ['$scope', '$http', function($scope, $http) {        // listeners
         $scope.showAbout = function() {            $('#modalSobre').modal()        }
         $scope.showHowItWorks = function() {            $('#modalFuncionamento').modal()        }
+        $scope.anos = [2013, 2014];
         $http.get("data/municipios.json").success(
             function(data) {
                 $scope.municipios = data;
