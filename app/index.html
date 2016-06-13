@@ -11,14 +11,14 @@
 
 <title>Balanço Financeiro dos Municípios de São Paulo</title>
 
-    <!-- build:css css/index.min.css -->
-    <link href="./../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link href="./css/index.css" rel="stylesheet">
-    <!-- endbuild -->
+<!-- build:css css/index.min.css -->
+<link rel="stylesheet" type="text/css" href="./css/index.css">
+<link rel="stylesheet" type="text/css" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+<!-- endbuild -->
 </head>
 
-<body ng-controller="BalancoController" id="page-top"
-	data-spy="scroll" data-target=".navbar-fixed-top">
+<body ng-controller="BalancoController" id="page-top" data-spy="scroll"
+	data-target=".navbar-fixed-top">
 
 	<!-- Navigation -->
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -30,14 +30,17 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand page-scroll" href="#page-top">Balanço Financeiro Municipal</a>
+				<a class="navbar-brand page-scroll" href="#">Balanço
+					Financeiro Municipal</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav">
-					<li><a class="page-scroll" href="#funcionamento" ng-click="showHowItWorks()">Como Funciona?</a></li>
-					<li><a class="page-scroll" href="#sobre" ng-click="showAbout()">Sobre</a></li>
+					<li><a class="page-scroll" href="#funcionamento"
+						ng-click="showHowItWorks()">Como Funciona?</a></li>
+					<li><a class="page-scroll" href="#sobre"
+						ng-click="showAbout()">Sobre</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -45,33 +48,39 @@
 		<!-- /.container -->
 	</nav>
 
-    <!-- MAIN CONTENT -->
-    <section>
-        <div class="container">
-            <!-- TITLE --> 
-            <div class="row">
-		        <div class="col-lg-12">
-			        <h1>Balanço municipal</h1>
-		        </div>
-                <p class="lead">
-				    Veja o resumo do balanço financeiro do seu município baseado em dados do <a href="http://transparencia.tce.sp.gov.br/">TCE de São Paulo</a> 
-			    </p>
-	        </div>
-            <!-- ENDTITLE -->
-            <!-- SELECT -->
-            <div class="row">
-                <div class="col-lg-12">
-<h2>
-					<div class="input-group">
-						<span class="input-group-addon" id="municipioLbl">Município
-						</span> <select class="form-control input-lg" aria-describedby="municipioLbl" ng-model="municipio" ng-disabled="!municipios" ng-change="loadApp()" ng-options="m.nome for m in municipios"></select>
-					</div></h2>
-                </div>
-            </div>
-            <!-- ENDSELECT-->
-        </div>
-    </section>
-    <!-- END MAIN CONTENT -->
+	<!-- MAIN CONTENT -->
+	<section>
+		<div class="container">
+			<!-- TITLE -->
+			<div class="row">
+				<div class="col-lg-12">
+					<h1>Balanço municipal</h1>
+				</div>
+				<p class="lead">
+					Veja o resumo do balanço financeiro do seu município baseado em
+					dados do <a href="http://transparencia.tce.sp.gov.br/">TCE de
+						São Paulo</a>
+				</p>
+			</div>
+			<!-- ENDTITLE -->
+			<!-- SELECT -->
+			<div class="row">
+				<div class="col-lg-12">
+					<h2>
+						<div class="input-group">
+							<span class="input-group-addon" id="municipioLbl">Município
+							</span> <select class="form-control input-lg"
+								aria-describedby="municipioLbl" ng-model="municipio"
+								ng-disabled="!municipios" ng-change="loadApp()"
+								ng-options="m.nome for m in municipios"></select>
+						</div>
+					</h2>
+				</div>
+			</div>
+			<!-- ENDSELECT-->
+		</div>
+	</section>
+	<!-- END MAIN CONTENT -->
 
 
 	<!-- modal funcionamento -->
@@ -93,12 +102,11 @@
 			<!-- /.modal-sobre-content -->
 		</div>
 		<!-- /.modal-sobre-dialog -->
-    </div>
+	</div>
 	<!-- /.modal -->
 
 	<!-- modal sobre -->
-	<div class="modal fade" tabindex="-1" role="dialog"
-		id="modalSobre">
+	<div class="modal fade" tabindex="-1" role="dialog" id="modalSobre">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -109,20 +117,20 @@
 					<h4>Sobre</h4>
 				</div>
 				<div class="modal-body">
-						<p>
-							<strong> Desenvolvido por <a
-								href="http://transparenciasjc.github.io/">Dados Abertos SJC</a>.
-								Curta nossa <a
-								href="https://www.facebook.com/pages/Dados-Abertos-SJC/436813019726917?ref=hl">página</a>.
-							</strong>
-						</p>
-						<img src="images/dados_abertos_sjc.jpg" />
+					<p>
+						<strong> Desenvolvido por <a
+							href="http://transparenciasjc.github.io/">Dados Abertos SJC</a>.
+							Curta nossa <a
+							href="https://www.facebook.com/pages/Dados-Abertos-SJC/436813019726917?ref=hl">página</a>.
+						</strong>
+					</p>
+					<img src="images/dados_abertos_sjc.jpg" />
 				</div>
 			</div>
 			<!-- /.modal-sobre-content -->
 		</div>
 		<!-- /.modal-sobre-dialog -->
-    </div>
+	</div>
 	<!-- /.modal -->
 
 	<footer class="footer">
@@ -134,11 +142,11 @@
 			</p>
 		</div>
 	</footer>
-    <!-- build:js js/index.min.js -->
-    <script src="./../bower_components/angular/angular.min.js"></script>
-    <script src="./../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="./../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="./js/controller.js"></script>
-    <!-- endbuild -->
+	<!-- build:js js/index.min.js -->
+	<script src="./bower_components/angular/angular.min.js"></script>
+	<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="./js/controller.js"></script>
+	<!-- endbuild -->
 </body>
 </html>

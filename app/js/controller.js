@@ -5,7 +5,7 @@ var balancoApp = angular.module('BalancoApp', []);
 balancoApp.controller('BalancoController',
     ['$scope', '$http', function($scope, $http) {        // listeners
         $scope.showAbout = function() {            $('#modalSobre').modal()        }
-        $scope.showHowItWorks = function() {            $('#modalSobre').modal()        }
+        $scope.showHowItWorks = function() {            $('#modalFuncionamento').modal()        }
         $http.get("data/municipios.json").success(
             function(data) {
                 $scope.municipios = data;
