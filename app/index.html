@@ -65,7 +65,7 @@
 			<!-- ENDTITLE -->
 			<!-- SELECT -->
 			<div class="row">
-				<div class="col-lg-8">
+				<div class="col-lg-6">
 						<div class="input-group">
 							<span class="input-group-addon" id="municipioLbl">Município
 							</span> <select class="form-control input-lg"
@@ -74,18 +74,19 @@
 								ng-options="m.nome for m in municipios"></select>
 						</div>
 				</div>
-				<div class="col-lg-4">
-                        <div class="input-group">
-							<span class="input-group-addon" id="anoLbl">Ano
-							</span> <select class="form-control input-lg"
-								aria-describedby="anoLbl" ng-model="ano"
-								ng-disabled="!anos" ng-change="loadApp()"
-								ng-options="a for a in anos"></select>
-						</div>
-				</div>
-
 			</div>
 			<!-- ENDSELECT-->
+            <!-- DATA -->
+            <hr />
+            <!-- START REVENUE -->
+            <div class="row" ng-show="revenue">
+            </div>
+            <!-- END REVENUE -->
+            <!-- START EXPENSES -->
+            <div class="row" ng-show="revenue">
+            </div>
+            <!-- END EXPENSES -->
+            <!-- ENDDATA -->
 		</div>
 	</section>
 	<!-- END MAIN CONTENT -->
@@ -154,6 +155,7 @@
 	<script src="./bower_components/angular/angular.min.js"></script>
 	<script src="./bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="./bower_components/highcharts/highcharts.js"></script>
 	<script src="./js/controller.js"></script>
 	<!-- endbuild -->
 </body>

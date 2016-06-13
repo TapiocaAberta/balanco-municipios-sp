@@ -49,7 +49,7 @@ gulp.task('server', function() {
         console.log("Linting " + event.path);
         gulp.src(event.path)
             .pipe(plugins.jshint())
-            .pipe(plugins.jshint.reporter(jshintStylish));
+            .pipe(plugins.jshint.reporter('jshint-stylish'));
     });
 
     gulp.watch('app/css/**/*.css').on('change', function(event) {
