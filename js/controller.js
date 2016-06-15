@@ -12,6 +12,9 @@ balancoApp.controller('BalancoController',
         $http.get("data/municipios.json").success(
             function(data) {
                 $scope.municipios = data;
+                var urlId = recuperaMapaUrl()['id'];
+                if(urlId) {                    for(i in $scope.municipios) {                        var m = $scope.municipios[i];
+                        if(m.id === urlId) {                            $scope.municipio = m;                        }                    }                    $scope.loadApp();                }
         });
 
         $scope.loadApp = function(){            var munId = $scope.municipio.id;
@@ -28,12 +31,8 @@ balancoApp.controller('BalancoController',
                 loadExpenses(data);
             });
             $('html, body').animate({
-				scrollTop: $("#cmbMunicipios").offset().top
+				scrollTop: $("#cmbMunicipios").offset().top - 70
 			}, 1000);        };
-        var urlId = recuperaMapaUrl()['id'];
-        if(urlId) {            $scope.municipio = {                id: urlId
-            };
-            $scope.loadApp();        }
 }]);
 // making global for debug
 var detailsMap = {};
