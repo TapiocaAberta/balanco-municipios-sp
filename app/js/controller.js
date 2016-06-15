@@ -108,14 +108,31 @@ function loadExpenses(data) {    var series = [];
 
     function loadRevenue(data) {        var title = {text: "Receitas para o município " + data[0].nome};    
         var series = [];
-        for(var i = 0; i< data.length; i++) {            series[i] = {};
-            series[i].name = "Ano " + data[i].ano;
-            series[i].data = [                data[i].impostosProprios, 
-                data[i].impostosEstado,
-                data[i].impostosUniao
-            ];        }       $('#revenuesChart').highcharts({
+        var totals = {};
+        var pieSerie = {            type: 'pie',
+            name: 'Total por ano',
+            data: [],
+            center: [30, 0],
+            size: 50,
+            showInLegend: false,
+            dataLabels: {
+                enabled: false
+            }        };
+        for(var i = 0; i< data.length; i++) {            var year = data[i].ano;            series[i] = {};
+            series[i].name = "Ano " + year;
+            series[i].data = [                { type: "column", y: data[i].impostosProprios },
+                { type: "column", y: data[i].impostosEstado },
+                { type: "column", y: data[i].impostosUniao },
+            ];
+            if(!totals[year]) totals[year] = 0;
+            totals[year] += data[i].impostosProprios + data[i].impostosEstado + data[i].impostosUniao;        }
+    // add the data for the small pie chart
+        for(var year in totals) {            pieSerie.data.push({
+                name: "Ano " + year,
+                y: totals[year]                       });        }
+        series.push(pieSerie);       $('#revenuesChart').highcharts({
         chart: {
-            type: 'bar'
+            type: 'column'
         },
         title: title,
         xAxis: {
