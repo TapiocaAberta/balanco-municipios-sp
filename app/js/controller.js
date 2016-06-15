@@ -2,6 +2,8 @@ var SEPARADOR_URL = "&";
 var balancoApp = angular.module('BalancoApp', []);
 
 var colors = {};
+var SEPARADOR_URL = "|"
+
 // básico para começar, ainda não aprendi os módulos
 balancoApp.controller('BalancoController',
     ['$scope', '$http', function($scope, $http) {        for(var i = 0; i < Highcharts.getOptions().colors.length; i++){            colors[2012 + i] = Highcharts.getOptions().colors[i];        }        // listeners
@@ -13,6 +15,10 @@ balancoApp.controller('BalancoController',
         });
 
         $scope.loadApp = function(){            var munId = $scope.municipio.id;
+            var params = {};
+            params['id'] = munId;
+            params['nome'] = $scope.municipio.nome;
+            salvaMapaUrl(params);
             $scope.revenue = null;
             $scope.expenses = null;
             $http.get("data/receitas/" + munId + ".json").success(
@@ -25,6 +31,10 @@ balancoApp.controller('BalancoController',
             $('html, body').animate({
 				scrollTop: $("#cmbMunicipios").offset().top
 			}, 1000);        };
+        var params = recuperaMapaUrl();
+        if(params) {            $scope.municipio = {                id: params['id'],
+                nome: params['nome']             };
+            $scope.loadApp();        }
 }]);
 
 function loadExpenses(data) {    var series = [];
@@ -78,7 +88,7 @@ function loadExpenses(data) {    var series = [];
         chart: {
             type: 'column'
         },
-        title: "Gastos",
+        title: { text: "Despesas" },
         xAxis: {
             categories: categories,
         },
@@ -111,8 +121,7 @@ function loadExpenses(data) {    var series = [];
     });
 }
 
-    function loadRevenue(data) {        var title = {text: "Receitas para o município " + data[0].nome};    
-        var series = [];
+    function loadRevenue(data) {        var series = [];
         var totals = {};
         var pieSerie = {            type: 'pie',
             name: 'Total por ano',
@@ -140,7 +149,7 @@ function loadExpenses(data) {    var series = [];
         chart: {
             type: 'column'
         },
-        title: title,
+        title: { text: "Receita de impostos" },
         xAxis: {
             categories: ['Impostos Próprios', 'Impostos do Estado', 'Impostos da União'],
 
