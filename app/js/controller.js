@@ -1,9 +1,10 @@
 var SEPARADOR_URL = "&";
 var balancoApp = angular.module('BalancoApp', []);
 
+var colors = {};
 // básico para começar, ainda não aprendi os módulos
 balancoApp.controller('BalancoController',
-    ['$scope', '$http', function($scope, $http) {        // listeners
+    ['$scope', '$http', function($scope, $http) {        for(var i = 0; i < Highcharts.getOptions().colors.length; i++){            colors[2012 + i] = Highcharts.getOptions().colors[i];        }        // listeners
         $scope.showAbout = function() {            $('#modalSobre').modal();        };
         $scope.showHowItWorks = function() {            $('#modalFuncionamento').modal();        };
         $http.get("data/municipios.json").success(
@@ -40,7 +41,7 @@ function loadExpenses(data) {    var series = [];
     // extracting chart information from the data
     for(var i = 0; i < data.length; i++) {        var cat = data[i].funcao;
         var year = data[i].ano;        var serie = searchSeries(series, year);
-        if(!serie) {            serie = { year: year, name: "Ano " + year, mapCategories: {}, data: []};            series.push(serie);        }
+        if(!serie) {            serie = { year: year, name: "Ano " + year, mapCategories: {}, data: [], color: colors[year]};            series.push(serie);        }
         if(categories.indexOf(cat) === -1) {            categories.push(cat); 
         }
         if(!serie.mapCategories[cat]) {            serie.mapCategories[cat] = 0;        }
@@ -64,7 +65,8 @@ function loadExpenses(data) {    var series = [];
     // add the data for the small pie chart
     for(var year in totals) {        pieSerie.data.push({
             name: "Ano " + year,
-            y: totals[year]                   });    }
+            y: totals[year],
+            color: colors[year]                  });    }
     series.push(pieSerie);
     for(var id in drillDownMap) {        var drillDown = drillDownMap[id];        drillDownSeries.push({            id: id,
             data: drillDown.data,
@@ -118,7 +120,7 @@ function loadExpenses(data) {    var series = [];
             dataLabels: {
                 enabled: false
             }        };
-        for(var i = 0; i< data.length; i++) {            var year = data[i].ano;            series[i] = {};
+        for(var i = 0; i< data.length; i++) {            var year = data[i].ano;            series[i] = { color: colors[year] };
             series[i].name = "Ano " + year;
             series[i].data = [                { type: "column", y: data[i].impostosProprios },
                 { type: "column", y: data[i].impostosEstado },
@@ -126,10 +128,11 @@ function loadExpenses(data) {    var series = [];
             ];
             if(!totals[year]) totals[year] = 0;
             totals[year] += data[i].impostosProprios + data[i].impostosEstado + data[i].impostosUniao;        }
-    // add the data for the small pie chart
+        // add the data for the small pie chart
         for(var year in totals) {            pieSerie.data.push({
                 name: "Ano " + year,
-                y: totals[year]                       });        }
+                y: totals[year],
+                color: colors[year]                       });        }
         series.push(pieSerie);       $('#revenuesChart').highcharts({
         chart: {
             type: 'column'
