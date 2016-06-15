@@ -55,40 +55,43 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1>Balanço municipal</h1>
-				</div>
 				<p class="lead">
-					Veja o resumo do balanço financeiro do seu município baseado em
+					Resumo do balanço financeiro(impostos e destino dos gastos) do seu município baseado em
 					dados do <a href="http://transparencia.tce.sp.gov.br/">TCE de
-						São Paulo</a>
+						São Paulo</a>. 
 				</p>
+                </div>
 			</div>
+            <hr />
 			<!-- ENDTITLE -->
 			<!-- SELECT -->
 			<div class="row">
-				<div class="col-lg-6">
+                <div class="col-lg-2"></div>
+				<div class="col-lg-8">
 						<div class="input-group">
 							<span class="input-group-addon" id="municipioLbl">Município
 							</span> <select class="form-control input-lg"
+                                id="cmbMunicipios"
 								aria-describedby="municipioLbl" ng-model="municipio"
 								ng-disabled="!municipios" ng-change="loadApp()"
 								ng-options="m.nome for m in municipios"></select>
 						</div>
 				</div>
+                <div class="col-lg-2"> </div>
 			</div>
 			<!-- ENDSELECT-->
             <!-- DATA -->
-            <hr />
             <!-- START REVENUE -->
             <div class="row">
-                <div  id="revenuesChart" class="col-lg-6" ng-show="revenue"/>
-                </div>
-                <div id="expensesChart" class="col-lg-6" ng-show="expenses"/>
+                <div  id="revenuesChart" class="col-lg-12"/>
                 </div>
             </div>
+            <br />
             <!-- END REVENUE -->
             <!-- START EXPENSES -->
             <div class="row">
-               
+                <div id="expensesChart" class="col-lg-12" />
+                </div>
             </div>
             <!-- END EXPENSES -->
             <!-- ENDDATA -->

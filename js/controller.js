@@ -1,18 +1,24 @@
 var SEPARADOR_URL = "&";
 var balancoApp = angular.module('BalancoApp', []);
 
+var colors = {};
+var SEPARADOR_URL = "|"
+
 // básico para começar, ainda não aprendi os módulos
 balancoApp.controller('BalancoController',
-    ['$scope', '$http', function($scope, $http) {        // listeners
+    ['$scope', '$http', function($scope, $http) {        for(var i = 0; i < Highcharts.getOptions().colors.length; i++){            colors[2012 + i] = Highcharts.getOptions().colors[i];        }        // listeners
         $scope.showAbout = function() {            $('#modalSobre').modal();        };
         $scope.showHowItWorks = function() {            $('#modalFuncionamento').modal();        };
-        $scope.anos = [2013, 2014];
         $http.get("data/municipios.json").success(
             function(data) {
                 $scope.municipios = data;
         });
 
         $scope.loadApp = function(){            var munId = $scope.municipio.id;
+            var params = {};
+            params['id'] = munId;
+            params['nome'] = $scope.municipio.nome;
+            salvaMapaUrl(params);
             $scope.revenue = null;
             $scope.expenses = null;
             $http.get("data/receitas/" + munId + ".json").success(
@@ -21,7 +27,14 @@ balancoApp.controller('BalancoController',
             $http.get("data/despesas/" + munId + ".json").success(
             function(data) {                $scope.expenses = data;
                 loadExpenses(data);
-            });        };
+            });
+            $('html, body').animate({
+				scrollTop: $("#cmbMunicipios").offset().top
+			}, 1000);        };
+        var params = recuperaMapaUrl();
+        if(params) {            $scope.municipio = {                id: params['id'],
+                nome: params['nome']             };
+            $scope.loadApp();        }
 }]);
 
 function loadExpenses(data) {    var series = [];
@@ -41,7 +54,7 @@ function loadExpenses(data) {    var series = [];
     // extracting chart information from the data
     for(var i = 0; i < data.length; i++) {        var cat = data[i].funcao;
         var year = data[i].ano;        var serie = searchSeries(series, year);
-        if(!serie) {            serie = { year: year, name: "Ano " + year, mapCategories: {}, data: []};            series.push(serie);        }
+        if(!serie) {            serie = { year: year, name: "Ano " + year, mapCategories: {}, data: [], color: colors[year]};            series.push(serie);        }
         if(categories.indexOf(cat) === -1) {            categories.push(cat); 
         }
         if(!serie.mapCategories[cat]) {            serie.mapCategories[cat] = 0;        }
@@ -65,7 +78,8 @@ function loadExpenses(data) {    var series = [];
     // add the data for the small pie chart
     for(var year in totals) {        pieSerie.data.push({
             name: "Ano " + year,
-            y: totals[year]                   });    }
+            y: totals[year],
+            color: colors[year]                  });    }
     series.push(pieSerie);
     for(var id in drillDownMap) {        var drillDown = drillDownMap[id];        drillDownSeries.push({            id: id,
             data: drillDown.data,
@@ -74,7 +88,7 @@ function loadExpenses(data) {    var series = [];
         chart: {
             type: 'column'
         },
-        title: "Gastos",
+        title: { text: "Despesas" },
         xAxis: {
             categories: categories,
         },
@@ -107,18 +121,35 @@ function loadExpenses(data) {    var series = [];
     });
 }
 
-    function loadRevenue(data) {        var title = {text: "Receitas para o município " + data[0].nome};    
-        var series = [];
-        for(var i = 0; i< data.length; i++) {            series[i] = {};
-            series[i].name = "Ano " + data[i].ano;
-            series[i].data = [                data[i].impostosProprios, 
-                data[i].impostosEstado,
-                data[i].impostosUniao
-            ];        }       $('#revenuesChart').highcharts({
+    function loadRevenue(data) {        var series = [];
+        var totals = {};
+        var pieSerie = {            type: 'pie',
+            name: 'Total por ano',
+            data: [],
+            center: [30, 0],
+            size: 50,
+            showInLegend: false,
+            dataLabels: {
+                enabled: false
+            }        };
+        for(var i = 0; i< data.length; i++) {            var year = data[i].ano;            series[i] = { color: colors[year] };
+            series[i].name = "Ano " + year;
+            series[i].data = [                { type: "column", y: data[i].impostosProprios },
+                { type: "column", y: data[i].impostosEstado },
+                { type: "column", y: data[i].impostosUniao },
+            ];
+            if(!totals[year]) totals[year] = 0;
+            totals[year] += data[i].impostosProprios + data[i].impostosEstado + data[i].impostosUniao;        }
+        // add the data for the small pie chart
+        for(var year in totals) {            pieSerie.data.push({
+                name: "Ano " + year,
+                y: totals[year],
+                color: colors[year]                       });        }
+        series.push(pieSerie);       $('#revenuesChart').highcharts({
         chart: {
-            type: 'bar'
+            type: 'column'
         },
-        title: title,
+        title: { text: "Receita de impostos" },
         xAxis: {
             categories: ['Impostos Próprios', 'Impostos do Estado', 'Impostos da União'],
 
