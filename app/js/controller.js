@@ -21,7 +21,10 @@ balancoApp.controller('BalancoController',
             $http.get("data/despesas/" + munId + ".json").success(
             function(data) {                $scope.expenses = data;
                 loadExpenses(data);
-            });        };
+            });
+            $('html, body').animate({
+				scrollTop: $("#cmbMunicipios").offset().top
+			}, 1000);        };
 }]);
 
 function loadExpenses(data) {    var series = [];

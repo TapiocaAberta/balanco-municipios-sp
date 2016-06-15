@@ -69,6 +69,7 @@
 						<div class="input-group">
 							<span class="input-group-addon" id="municipioLbl">Município
 							</span> <select class="form-control input-lg"
+                                id="cmbMunicipios"
 								aria-describedby="municipioLbl" ng-model="municipio"
 								ng-disabled="!municipios" ng-change="loadApp()"
 								ng-options="m.nome for m in municipios"></select>
