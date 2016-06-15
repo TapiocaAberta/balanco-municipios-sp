@@ -1,4 +1,7 @@
 var gulp = require('gulp');
+var gulp = require('gulp');
+var ghPages = require('gulp-gh-pages');
+
 require('es6-promise').polyfill();
 // Include plugins
 var plugins = require("gulp-load-plugins")({
@@ -59,4 +62,9 @@ gulp.task('server', function() {
             .pipe(plugins.csslint.reporter());
     });    
 
+});
+
+gulp.task('deploy', function() {
+  return gulp.src('./dist/**/*')
+    .pipe(ghPages());
 });
