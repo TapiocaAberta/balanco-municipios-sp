@@ -2,11 +2,12 @@ var SEPARADOR_URL = "&";
 var balancoApp = angular.module('BalancoApp', []);
 
 var colors = {};
-var SEPARADOR_URL = "|"
+var SEPARADOR_URL = "|";
+
 
 // básico para começar, ainda não aprendi os módulos
 balancoApp.controller('BalancoController',
-    ['$scope', '$http', function($scope, $http) {        for(var i = 0; i < Highcharts.getOptions().colors.length; i++){            colors[2012 + i] = Highcharts.getOptions().colors[i];        }        // listeners
+    ['$scope', '$http', function($scope, $http) {        // set defaul colors        for(var i = 0; i < Highcharts.getOptions().colors.length; i++){            colors[2012 + i] = Highcharts.getOptions().colors[i];        }        // listeners
         $scope.showAbout = function() {            $('#modalSobre').modal();        };
         $scope.showHowItWorks = function() {            $('#modalFuncionamento').modal();        };
         $http.get("data/municipios.json").success(
@@ -78,11 +79,11 @@ function loadExpenses(data) {    var series = [];
             y: totals[year],
             color: colors[year]                  });    }
     series.push(pieSerie);
-    $('#expensesChart').highcharts({
+    var chart = $('#expensesChart').highcharts({
         chart: {
             type: 'column'
         },
-        title: { text: "Despesas" },
+        title: { text: "Despesas por área" },
         xAxis: {
             categories: categories,
         },
@@ -108,7 +109,6 @@ function loadExpenses(data) {    var series = [];
                     var details = detailsMap[key]; 
                     if(details) { 
                         output += "<br /> <br /><em>Detalhes:</em><br/>";
-                        console.log(details)
                         for(var d in details) {                            var detail = details[d];                            output += "<b>" + detail.name + "</b>" + ": R$ " + detail.value.toLocaleString() + "<br />";                        }
                     }                                       
                     return output;                }            }
@@ -123,6 +123,7 @@ function loadExpenses(data) {    var series = [];
         },
         series: series
     });
+    chart.reflow();
 }
 
     function loadRevenue(data) {        var series = [];
@@ -149,7 +150,7 @@ function loadExpenses(data) {    var series = [];
                 name: year,
                 y: totals[year],
                 color: colors[year]                       });        }
-        series.push(pieSerie);       $('#revenuesChart').highcharts({
+        series.push(pieSerie);       var chart = $('#revenuesChart').highcharts({
         chart: {
             type: 'column'
         },
@@ -187,7 +188,8 @@ function loadExpenses(data) {    var series = [];
             }
         },
         series: series
-    });}
+    }); 
+    chart.reflow();}
 function buildDetailsKey(cat, year) {    return cat + " | Ano " + year;}
 function searchSeries(series, year) {    var serie;    for(var i = 0; i< series.length; i++) {        if(series[i].year === year){            serie = series[i];        }    }
     return serie;}
