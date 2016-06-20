@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "transform": "node scripts-transform/*.js"
+    "transform": "node scripts-data/transform/*.js"
   },
   "author": "William Siqueira",
   "license": "BSD",
