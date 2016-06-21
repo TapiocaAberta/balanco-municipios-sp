@@ -3,10 +3,14 @@ var csv = require("fast-csv"), util = require('../util.js');
 
 
 /* * CONSTANTS */
-var PATH_MUNICIPIOS = 'app/data/municipios.json'
-var PATH_DESPESAS = 'app/data/despesas/'
-var PATH_RECEITAS = 'app/data/receitas/'
-var PATH_TODAS_RECEITAS = 'app/data/receitas.json'
+var PATH_MUNICIPIOS = 'app/data/municipios.json';
+var PATH_DESPESAS = 'app/data/despesas/';
+var PATH_RECEITAS = 'app/data/receitas/';
+var PATH_TODAS_RECEITAS = 'app/data/receitas.json';
+
+var PATH_DESPESAS_POR_CATEGORIA = PATH_RECEITAS + 'por_categoria';
+
+var DELIMITER = ';';
 
 /* * Globals */
 var municipiosMapa = {};
@@ -24,7 +28,7 @@ var retrieveExpenses = function(data) {    // TODO: need to be adjusted accordi
 }
 /* * need to write a JSON with cities human readable name and a normalized lower case name to: *  * APP_ROOT/data/municipios.json *  * This data is taken from the expenses JSON *  */
 csv
- .fromPath("./data/despesa-funcao-subfunc.csv", {delimiter: ';' })
+ .fromPath("./data/despesa-funcao-subfunc.csv", {delimiter: DELIMITER })
  .on("data", function(data){    var cityName = data[2];    if(cityName != 'Município') {        var id = util.transformName(cityName);
         municipiosMapa[id] = cityName;
         if(lastId == '') {            lastId = id;        }
@@ -41,7 +45,7 @@ csv
 /* * Will read the expenses data and write a JSON with the revenues of a given year to: *  * APP_ROOT/data/receitas.json * */
 var pRevenueId = '';
 csv
- .fromPath("./data/receitas_resultantes_de_impostos.csv", {delimiter: ';' })
+ .fromPath("./data/receitas_resultantes_de_impostos.csv", {delimiter: DELIMITER })
  .on("data", function(data){    var cityName = data[0];    if(cityName != 'Município') {        var id = util.transformName(cityName);
         if(pRevenueId == '') pRevenueId = id;
         if(id != pRevenueId) {             util.writeJSON(PATH_RECEITAS + pRevenueId + '.json', revenues);
