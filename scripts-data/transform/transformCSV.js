@@ -1,5 +1,5 @@
 /* * IMPORTS */
-var csv = require("fast-csv"), normalizer = require('diacritics'), util = require('../util.js');
+var csv = require("fast-csv"), util = require('../util.js');
 
 
 /* * CONSTANTS */
