@@ -1,20 +1,17 @@
-var SEPARADOR_URL = "&";
 var colors = {};
-var SEPARADOR_URL = "|";
-
 
 // básico para começar, ainda não aprendi os módulos
 (function() {
     angular
         .module('BalancoApp')
-        .controller('BalancoController', ['$scope', '$http', 'expense', function($scope, $http, expense) {
+        .controller('BalancoController', ['$scope', '$http', 'expense', 'urlUtils', function($scope, $http, expense, urlUtils) {
             // set defaul colors            for(var i = 0; i < Highcharts.getOptions().colors.length; i++){                colors[2012 + i] = Highcharts.getOptions().colors[i];            }            // listeners
             $scope.showAbout = function() {                $('#modalSobre').modal();            };
             $scope.showHowItWorks = function() {                $('#modalFuncionamento').modal();            };
             $http.get("data/municipios.json").success(
                 function(data) {
                     $scope.municipios = data;
-                    var urlId = recuperaMapaUrl()['id'];
+                    var urlId = urlUtils.getUrlMap()['id'];
                     if(urlId) {                        for(i in $scope.municipios) {                            var m = $scope.municipios[i];
                             if(m.id === urlId) {                                $scope.municipio = m;                            }                        }                        $scope.loadApp();                    }
             });
@@ -22,7 +19,8 @@ var SEPARADOR_URL = "|";
             $scope.loadApp = function(){                console.log(expense);                var munId = $scope.municipio.id;
                 var params = {};
                 params['id'] = munId;
-                salvaMapaUrl(params);
+                console.log(urlUtils);
+                urlUtils.saveUrlMap(params);
                 $scope.revenue = null;
                 $scope.expenses = null;
                 $http.get("data/receitas/" + munId + ".json").success(
@@ -166,21 +164,3 @@ function buildChart(data) {
 function buildDetailsKey(cat, year) {    return cat + " | Ano " + year;}
 function searchSeries(series, year) {    var serie;    for(var i = 0; i< series.length; i++) {        if(series[i].year === year){            serie = series[i];        }    }
     return serie;}
-
-function recuperaMapaUrl() {
-	var todos = window.location.hash.replace('#', '');
-	var params = {};
-	$.each(todos.split(SEPARADOR_URL), function(i, v) {
-		var campos = v.split('=');
-		params[campos[0]] = campos[1];
-	});
-	return params;
-}
-
-function salvaMapaUrl(params) {
-	var novaUrl = '';
-	$.each(params, function(i, v) {
-		novaUrl += i + '=' + v + SEPARADOR_URL;
-	});
-	window.location.hash = novaUrl.substring(0, novaUrl.length - 1);
-}
