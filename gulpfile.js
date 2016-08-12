@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var gulp = require('gulp');
 var ghPages = require('gulp-gh-pages');
 
 require('es6-promise').polyfill();
@@ -60,7 +59,7 @@ gulp.task('server', function() {
         gulp.src(event.path)
             .pipe(plugins.csslint())
             .pipe(plugins.csslint.reporter());
-    });    
+    });
 
 });
 
