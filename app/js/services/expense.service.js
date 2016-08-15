@@ -7,16 +7,12 @@
         }
 
         function searchSeries(series, year) {
-            var serie;
-            for(var i = 0; i< series.length; i++) {
-                if(series[i].year === year){
-                    serie = series[i];
-                }
-            }
-            return serie;
+            return series.filter(function(serie) {
+                return serie.year === year;
+            })[0];
         }
 
-        function loadExpenses(data) {
+        function buildChartData(data) {
             var series = [];
             var categories = [];
             var detailsMap = {};
@@ -36,11 +32,10 @@
                 }
             };
 
-            detailsMap = {};
             // extracting chart information from the data
-            for(var i = 0; i < data.length; i++) {
-                var cat = data[i].funcao;
-                var year = data[i].ano;
+            data.forEach(function(item) {
+                var cat = item.funcao;
+                var year = item.ano;
                 var serie = searchSeries(series, year);
                 if(!serie) {
                     serie = { year: year, name: year, mapCategories: {}, data: [], color: colors[year]};
@@ -53,10 +48,10 @@
                     serie.mapCategories[cat] = 0;
                 }
                 // sum all the values for this category
-                serie.mapCategories[cat] += data[i].valor;
+                serie.mapCategories[cat] += item.valor;
                 // totals for the pie chart
                 if(!totals[year]) totals[year] = 0;
-                totals[year] += data[i].valor;
+                totals[year] += item.valor;
                 // let's build the drilldown data now
                 // the ID is the key
                 var key = buildDetailsKey(cat, year);
@@ -64,20 +59,20 @@
                 if(!detailsMap[key]) {
                     detailsMap[key] = [];
                 }
-                detailsMap[key].push({ "name" : data[i].subFuncao, "value" : data[i].valor });
-            }
-                    // build the data for each category of each series(it might come in a random order, must organize)
-            for(var i = 0; i < series.length; i++) {
-                for(var j = 0; j < categories.length; j++) {
-                    var cat = categories[j];
-                    var val = series[i].mapCategories[cat];
-                    series[i].data.push({
-                        type: "column",
-                        name: cat,
+                detailsMap[key].push({ "name" : item.subFuncao, "value" : item.valor });
+            });
+
+            // build the data for each category of each series(it might come in a random order, must organize)
+            series.forEach(function(serie) {
+                categories.forEach(function(category) {
+                    var val = serie.mapCategories[category];
+                    serie.data.push({
+                        type: 'column',
+                        name: category,
                         y: val
                     });
-                }
-            }
+                });
+            });
 
             // add the data for the small pie chart
             for(var year in totals) {
@@ -89,11 +84,11 @@
             }
             series.push(pieSerie);
 
-            return {categories: categories, series: series};
+            return {categories: categories, series: series, detailsMap: detailsMap};
         };
 
         return {
-            buildChartData: loadExpenses
+            buildChartData: buildChartData
         };
 
     }

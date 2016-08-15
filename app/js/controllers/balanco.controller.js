@@ -1,36 +1,35 @@
 (function() {
 
-  function balancoController($scope, expense, revenue, utils, balancoService) {            $scope.showAbout = function() {                $('#modalSobre').modal();            };
-            $scope.showHowItWorks = function() {                $('#modalFuncionamento').modal();            };
+  function balancoController($scope, expense, revenue, utils, balancoService, $rootScope) {      $scope.showAbout = function() {          $('#modalSobre').modal();      };
+      $scope.showHowItWorks = function() {          $('#modalFuncionamento').modal();      };
 
-            balancoService.getCities().success(
-                function(data) {
-                    $scope.municipios = data;
-                    var urlId = utils.getUrlMap()['id'];
-                    if(urlId) {                        for(i in $scope.municipios) {                            var m = $scope.municipios[i];
-                            if(m.id === urlId) {                                $scope.municipio = m;                            }                        }                        $scope.loadApp();                    }
-            });
+      balancoService.getCities().success(
+          function(data) {
+              $scope.municipios = data;
+              var urlId = utils.getUrlMap()['id'];
+              if(urlId) {                  $scope.municipio = $scope.municipios.filter(function(municipio) {                      return municipio.id == urlId;                  })[0];                  $scope.loadApp();              }
+      });
 
-            $scope.loadApp = function(){                var munId = $scope.municipio.id;
-                var params = {};
-                params['id'] = munId;
-                utils.saveUrlMap(params);
-                $scope.revenue = null;
-                $scope.expenses = null;
+      $scope.loadApp = function(){          var munId = $scope.municipio.id;
+          var params = {};
+          params['id'] = munId;
+          utils.saveUrlMap(params);
+          $scope.revenue = null;
+          $scope.expenses = null;
 
-                balancoService.getRevenueFrom(munId).success(function(data) {
-                    $scope.revenue = data;                    var revenueChartData = revenue.buildChartData(data);                    buildRevenueChart(revenueChartData);
-                });
+          balancoService.getRevenueFrom(munId).success(function(data) {
+              $scope.revenue = data;              var revenueChartData = revenue.buildChartData(data);              buildRevenueChart(revenueChartData);
+          });
 
-                balancoService.getExpensesFrom(munId).success(function(data) {
-                    $scope.expenses = data;
-                    var expenseChartData = expense.buildChartData(data);
-                    buildExpenseChart(expenseChartData);
-                });
+          balancoService.getExpensesFrom(munId).success(function(data) {
+              $scope.expenses = data;
+              var expenseChartData = expense.buildChartData(data);
+              buildExpenseChart(expenseChartData);
+          });
 
-                $('html, body').animate({
-    				scrollTop: $("#cmbMunicipios").offset().top - 70
-    			}, 1000);            };
+          $('html, body').animate({
+			          scrollTop: $("#cmbMunicipios").offset().top - 70
+		      }, 1000);      };
     };
 
     balancoController.$inject = ['$scope', 'expenseService', 'revenueService', 'utils', 'BalancoService'];
@@ -71,7 +70,7 @@
                         output += "<span style=\"color: red\">R$: " + this.y.toLocaleString() + "</span>";
                         var key = buildDetailsKey(this.x, this.series.name);
                         console.log(key);
-                        var details = detailsMap[key];
+                        var details = data.detailsMap[key];
                         if(details) {
                             output += "<br /> <br /><em>Detalhes:</em><br/>";
                             for(var d in details) {
