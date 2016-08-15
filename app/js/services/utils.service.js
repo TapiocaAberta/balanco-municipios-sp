@@ -1,6 +1,6 @@
 (function() {
 
-    function urlUtils() {
+    function utilsService() {
         var SEPARADOR_URL = "&";
 
         function recuperaMapaUrl() {
@@ -25,13 +25,24 @@
         	window.location.hash = newUrl;
         };
 
+        function generateColors() {
+            var colors = {};
+            // set defaul colors
+             Highcharts.getOptions().colors.forEach(function(color, i) {
+                 colors[2012 + i] = color;
+             });
+
+            return colors;
+        }
+
         return {
             getUrlMap: recuperaMapaUrl,
-            saveUrlMap: salvaMapaUrl
+            saveUrlMap: salvaMapaUrl,
+            generateColors: generateColors
         }
 
     }
 
-    angular.module('BalancoApp').factory('urlUtils', urlUtils);
+    angular.module('BalancoApp').factory('utils', utilsService);
 
 }());

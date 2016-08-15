@@ -1,18 +1,28 @@
 (function() {
 
-    function expenseService() {
-        // making global for debug
-        var series = [];
-        var categories = [];
-
-        var detailsMap = {};
+    function expenseService(utils) {
 
         function buildDetailsKey(cat, year) {
             return cat + " | Ano " + year;
         }
 
+        function searchSeries(series, year) {
+            var serie;
+            for(var i = 0; i< series.length; i++) {
+                if(series[i].year === year){
+                    serie = series[i];
+                }
+            }
+            return serie;
+        }
+
         function loadExpenses(data) {
+            var series = [];
+            var categories = [];
+            var detailsMap = {};
             var totals = {};
+
+            var colors = utils.generateColors();
 
             var pieSerie = {
                 type: 'pie',
@@ -83,10 +93,11 @@
         };
 
         return {
-            loadData: loadExpenses
+            buildChartData: loadExpenses
         };
 
     }
 
-    angular.module('BalancoApp').factory('expense', expenseService);
+    expenseService.$inject = ['utils'];
+    angular.module('BalancoApp').factory('expenseService', expenseService);
 }());
